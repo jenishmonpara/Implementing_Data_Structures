@@ -1,0 +1,181 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+
+
+
+class heap{
+
+public :
+
+    int* pointer;
+
+    int n, capacity;
+
+    heap()
+    {
+        pointer = new int[1];
+        n=0;
+        capacity=1;
+    }
+
+    ~heap()
+    {
+        delete[] pointer;
+    }
+
+    void max_heapify(int node);
+
+    void build_heap();
+
+    int get_max();
+
+    int extract_max();
+
+    void increase_key(int node, int key);
+
+    void insert_key(int key);
+
+    void heapsort();
+
+    void print_heap();
+
+};
+
+void heap:: max_heapify(int node)
+{
+    int index=node;
+
+    if(2*node+1<=n-1 && pointer[2*node+1]>pointer[index])
+    {
+        index=2*node+1;
+    }
+
+    if(2*node+2<=n-1 && pointer[2*node+2]>pointer[index])
+    {
+        index=2*node+2;
+    }
+
+    if(index!=node)
+    {
+        int temp=pointer[node];
+        pointer[node]=pointer[index];
+        pointer[index]=temp;
+
+        max_heapify(index);
+    }
+}
+
+void heap:: build_heap()
+{
+    for(int r=n/2-1; r>=0; r--)
+    {
+        max_heapify(r);
+    }
+}
+
+int heap:: get_max()
+{
+    return pointer[0];
+}
+
+int heap:: extract_max()
+{
+    int temp=pointer[0];
+    pointer[0]=pointer[n-1];
+    n--;
+    max_heapify(0);
+    return temp;
+}
+
+void heap:: increase_key(int node, int key)
+{
+    if(key<pointer[node])
+    {
+        cout<<"Given key is too less\n";
+        return;
+    }
+
+    pointer[node]=key;
+
+    while(node>0 && pointer[(node-1)/2]<pointer[node])
+    {
+        int temp=pointer[(node-1)/2];
+        pointer[(node-1)/2]=pointer[node];
+        pointer[node]=temp;
+        node=(node-1)/2;
+    }
+}
+
+void heap:: insert_key(int key)
+{
+    if(n==capacity)
+    {
+        int* newpointer = new int[2*capacity];
+
+        for(int i=0; i<n; i++)
+        {
+            newpointer[i]=pointer[i];
+        }
+
+        delete[] pointer;
+
+        pointer=newpointer;
+
+        capacity*=2;
+    }
+    pointer[n]=-1000000000;
+    n++;
+    increase_key(n-1,key);
+}
+
+void heap:: heapsort()
+{
+    for(int i=n-1; i>=1; i--)
+    {
+        int temp=pointer[0];
+        pointer[0]=pointer[i];
+        pointer[i]=temp;
+        n--;
+        max_heapify(0);
+    }
+}
+
+void heap:: print_heap()
+{
+    for(int i=0; i<n; i++)
+    {
+        cout<<pointer[i]<<" ";
+    }
+    cout<<"\n";
+}
+
+int main()
+{
+    
+   heap myheap;
+
+   for(int i=0; i<10; i++)
+   {
+       myheap.insert_key(i);
+   }
+
+   for(int i=0; i<5; i++)
+   {
+       cout<<myheap.extract_max()<<endl;
+   }
+
+   cout<<endl;
+
+   myheap.print_heap();
+
+   myheap.increase_key(2,5);
+
+   for(int i=0; i<5; i++)
+   {
+       cout<<myheap.extract_max()<<endl;
+   }
+
+   return 0;
+
+}

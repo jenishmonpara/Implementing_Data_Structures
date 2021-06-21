@@ -1,0 +1,99 @@
+//TRIE
+
+struct trie{
+    bool end;
+    unordered_map<char,trie*> m;
+    trie()
+    {
+        end = false;
+    }
+};
+
+struct trie* root ;
+
+void insert(string str)
+{
+    struct trie* curr = root;
+    for(auto ch : str)
+    {
+        if(!curr->m.count(ch))
+            curr->m[ch] = new trie;
+        curr = curr->m[ch];
+    }
+    curr->end = true;
+}
+
+bool search(string str)
+{
+    struct trie* curr = root;
+    for(auto ch : str)
+    {
+        if(!curr->m.count(ch))
+            return false;
+        curr = curr->m[ch];
+    }
+    return curr->end ;
+}
+
+void dfs(string str,struct trie* curr)
+{
+    if(curr->end)
+        cout << str << "\n";
+    for(int i=0;i<26;i++)
+    {
+        char ch = i+'a';
+        if(curr->m.count(ch))
+        {
+            dfs(str + ch,curr->m[ch]);
+        }
+    }
+}
+
+bool prefix(string str)
+{
+    struct trie* curr = root;
+    for(auto ch : str)
+    {
+        if(!curr->m.count(ch))
+            return false;
+        curr = curr->m[ch];
+    }
+    bool found = false;
+    for(int i=0;i<26;i++)
+    {
+        char ch = i+'a';
+        if(curr->m.count(ch))
+        {
+            found = true;
+            dfs(str + ch,curr->m[ch]);
+        }
+    }
+    return found;
+}
+
+int main()
+{
+    root = new trie;
+    int n;
+    cin >> n;
+    while(n--)
+    {
+        string str;
+        cin >> str;
+        insert(str);
+    }
+    cin >> n;
+    while(n--)
+    {
+        string str;
+        cin >> str;
+        if(search(str))
+            cout << "Found\n";
+        else 
+            cout << "Not Found\n";
+        if(prefix(str))
+            cout << "Found Prefix\n";
+        else 
+            cout << "Prefix Not Found\n";
+    }
+}

@@ -1,0 +1,508 @@
+vector<int> :-
+
+class Vector{
+
+public :
+
+    int* pointer;
+
+    int siz, capacity;
+
+    Vector()
+    {
+        pointer=new int[1];
+        capacity=1;
+        siz=0;
+    }
+
+    void pushback(int w)
+    {
+        if(siz==capacity)
+        {
+            int* newpointer = new int[2*capacity];
+
+            for(int i=0; i<capacity; i++)
+            {
+                newpointer[i]=pointer[i];
+            }
+
+            delete[] pointer;
+
+            pointer=newpointer;
+
+            capacity*=2;
+        }
+
+        pointer[siz]=w;
+        siz++;
+    }
+
+    void push(int index, int w)
+    {
+        if(index>siz || index<0)
+        {
+            cout<<"Out of bounds index given\n";
+        }
+        else
+        {
+            if(siz==capacity)
+            {
+                int* newpointer = new int[2*capacity];
+
+                for(int i=0; i<capacity; i++)
+                {
+                    newpointer[i]=pointer[i];
+                }
+
+                delete[] pointer;
+
+                pointer=newpointer;
+
+                capacity*=2;
+            }
+
+            siz++;
+            for(int i=index+1; i<siz; i++)
+            {
+                pointer[i]=pointer[i-1];
+            }
+            pointer[index]=w;
+        }
+    }
+
+    int getsize()
+    {
+        return siz;
+    }
+
+    int getelement(int index)
+    {
+        if(index>=0 && index<siz)
+        {
+            return pointer[index];
+        }
+        else
+        {
+            cout<<"Out of bounds of the vector";
+            return -inf;
+        }
+    }
+
+    void popback()
+    {
+        if(siz>0)
+        {
+            siz--;
+        }
+    }
+
+    void erasebyindex(int index)
+    {
+        if(index<0 || index>=siz)
+        {
+            cout<<"Out of bounds of the vector\n";
+        }
+        else
+        {
+            siz--;
+            for(int i=index; i<siz; i++)
+            {
+                pointer[i]=pointer[i+1];
+            }
+        }
+    }
+
+    void erasebyvalue(int w)
+    {
+        // this function will erase the first occurrence of the value w given in the vector if it's there.
+        for(int i=0; i<siz; i++)
+        {
+            if(pointer[i]==w)
+            {
+                erasebyindex(i);
+                break;
+            }
+        }
+    }
+
+    int getindex(int w)
+    {
+        for(int i=0; i<siz; i++)
+        {
+            if(pointer[i]==w)
+            {
+                return i;
+                break;
+            }
+        }
+
+        return -1;
+    }
+
+    int getcount(int w)
+    {
+        int ans=0;
+
+        for(int i=0; i<siz; i++)
+        {
+            if(pointer[i]==w){ans++;}
+        }
+
+        return ans;
+    }
+
+    void printvector()
+    {
+        for(int i=0; i<siz; i++)
+        {
+            cout<<pointer[i]<<" ";
+        }
+        nl;
+    }
+
+    void clearvector()
+    {
+        delete[] pointer;
+        siz=0;
+        pointer = new int[1];
+        capacity=1;
+    }
+
+    void sortvector()
+    {
+        // I am using bubble sort for easy implementation which takes O(n^2) time...
+        for(int i=0; i<siz-1; i++)
+        {
+            for(int j=0; j<siz-1-i; j++)
+            {
+                if(pointer[j]>pointer[j+1])
+                {
+                    int temp=pointer[j];
+                    pointer[j]=pointer[j+1];
+                    pointer[j+1]=temp;
+                }
+            }
+        }
+    }
+
+    int lowerbound(int w)
+    {
+        int l=0,r=siz-1,m;
+
+        while(r-l>1)
+        {
+            m=(l+r)/2;
+
+            if(pointer[m]<w)
+            {
+                l=m;
+            }
+            else
+            {
+                r=m;
+            }
+        }
+
+        if(pointer[l]>=w){return l;}
+        else if(pointer[r]>=w){return r;}
+        else{return siz;}
+    }
+
+    int upperbound(int w)
+    {
+        int l=0,r=siz-1,m;
+
+        while(r-l>1)
+        {
+            m=(l+r)/2;
+
+            if(pointer[m]<=w)
+            {
+                l=m;
+            }
+            else
+            {
+                r=m;
+            }
+        }
+
+        if(pointer[l]>w){return l;}
+        else if(pointer[r]>w){return r;}
+        else{return siz;}
+    }
+
+};
+
+
+Vector v;
+
+        v.pushback(1);
+        v.pushback(2);
+        v.printvector();
+        v.erasebyvalue(1);
+        v.printvector();
+        v.erasebyindex(0);
+        v.printvector();
+        v.pushback(3);
+        v.printvector();
+        v.push(0,-100);
+        v.printvector();
+        v.popback();
+        v.printvector();
+        v.erasebyindex(0);
+
+        // vector is empty right now...
+        for(int i=4; i>=0; i--)
+        {
+            v.pushback(i);
+        }
+        v.printvector();
+        v.sortvector();
+        v.printvector();
+        for(int i=0; i<=4; i++)
+        {
+            cout<<v.lowerbound(i);
+            nl;
+        }
+
+        for(int i=0; i<=4; i++)
+        {
+            cout<<v.upperbound(i);
+            nl;
+        }
+
+
+vector<any datatype> :-
+
+template <typename T> class Vector{
+
+public :
+
+    T* pointer;
+
+    int siz, capacity;
+
+    Vector()
+    {
+        pointer=new T[1];
+        capacity=1;
+        siz=0;
+    }
+
+    void pushback(T w)
+    {
+        if(siz==capacity)
+        {
+            T* newpointer = new T[2*capacity];
+
+            for(int i=0; i<capacity; i++)
+            {
+                newpointer[i]=pointer[i];
+            }
+
+            delete[] pointer;
+
+            pointer=newpointer;
+
+            capacity*=2;
+        }
+
+        pointer[siz]=w;
+        siz++;
+    }
+
+    void push(int index, T w)
+    {
+        if(index>siz || index<0)
+        {
+            cout<<"Out of bounds index given\n";
+        }
+        else
+        {
+            if(siz==capacity)
+            {
+                T* newpointer = new T[2*capacity];
+
+                for(int i=0; i<capacity; i++)
+                {
+                    newpointer[i]=pointer[i];
+                }
+
+                delete[] pointer;
+
+                pointer=newpointer;
+
+                capacity*=2;
+            }
+
+            siz++;
+            for(int i=siz-1; i>=index+1; i--)
+            {
+                pointer[i]=pointer[i-1];
+            }
+            pointer[index]=w;
+        }
+    }
+
+    int getsize()
+    {
+        return siz;
+    }
+
+    T getelement(int index)
+    {
+        if(index>=0 && index<siz)
+        {
+            return pointer[index];
+        }
+        else
+        {
+            cout<<"Out of bounds of the vector";
+            return;
+        }
+    }
+
+    void popback()
+    {
+        if(siz>0)
+        {
+            siz--;
+        }
+    }
+
+    void erasebyindex(int index)
+    {
+        if(index<0 || index>=siz)
+        {
+            cout<<"Out of bounds of the vector\n";
+        }
+        else
+        {
+            siz--;
+            for(int i=index; i<siz; i++)
+            {
+                pointer[i]=pointer[i+1];
+            }
+        }
+    }
+
+    void erasebyvalue(T w)
+    {
+        // this function will erase the first occurrence of the value w given in the vector if it's there.
+        for(int i=0; i<siz; i++)
+        {
+            if(pointer[i]==w)
+            {
+                erasebyindex(i);
+                break;
+            }
+        }
+    }
+
+    int getindex(T w)
+    {
+        for(int i=0; i<siz; i++)
+        {
+            if(pointer[i]==w)
+            {
+                return i;
+                break;
+            }
+        }
+
+        return -1;
+    }
+
+    int getcount(T w)
+    {
+        int ans=0;
+
+        for(int i=0; i<siz; i++)
+        {
+            if(pointer[i]==w){ans++;}
+        }
+
+        return ans;
+    }
+
+    void printvector()
+    {
+        for(int i=0; i<siz; i++)
+        {
+            cout<<pointer[i]<<" ";
+        }
+        cout<<"\n";
+    }
+
+    void clearvector()
+    {
+        delete[] pointer;
+        siz=0;
+        pointer = new T[1];
+        capacity=1;
+    }
+
+    void sortvector()
+    {
+        // I am using bubble sort for easy implementation which takes O(n^2) time...
+        for(int i=0; i<siz-1; i++)
+        {
+            for(int j=0; j<siz-1-i; j++)
+            {
+                if(pointer[j]>pointer[j+1])
+                {
+                    T temp=pointer[j];
+                    pointer[j]=pointer[j+1];
+                    pointer[j+1]=temp;
+                }
+            }
+        }
+    }
+
+    int lowerbound(T w)
+    {
+        int l=0,r=siz-1,m;
+
+        while(r-l>1)
+        {
+            m=(l+r)/2;
+
+            if(pointer[m]<w)
+            {
+                l=m;
+            }
+            else
+            {
+                r=m;
+            }
+        }
+
+        if(pointer[l]>=w){return l;}
+        else if(pointer[r]>=w){return r;}
+        else{return siz;}
+    }
+
+    int upperbound(T w)
+    {
+        int l=0,r=siz-1,m;
+
+        while(r-l>1)
+        {
+            m=(l+r)/2;
+
+            if(pointer[m]<=w)
+            {
+                l=m;
+            }
+            else
+            {
+                r=m;
+            }
+        }
+
+        if(pointer[l]>w){return l;}
+        else if(pointer[r]>w){return r;}
+        else{return siz;}
+    }
+
+};

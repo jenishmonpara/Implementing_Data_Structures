@@ -1,0 +1,107 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+
+class Stack{
+
+public:
+
+    int* pointer;
+
+    int n, capacity;
+
+    Stack()
+    {
+        pointer = new int[1];
+        capacity=1;
+        n=0;
+    }
+
+    ~Stack()
+    {
+        delete[] pointer;
+    }
+
+    void push(int value);
+
+    void pop();
+
+    int top();
+
+    void display();
+
+};
+
+void Stack:: push(int value)
+{
+    if(n==capacity)
+    {
+        int* newpointer = new int[2*capacity];
+
+        for(int i=0; i<n; i++)
+        {
+            newpointer[i]=pointer[i];
+        }
+
+        delete[] pointer;
+        pointer = newpointer;
+        capacity*=2;
+    }
+
+    pointer[n]=value;
+    n++;
+}
+
+void Stack:: pop()
+{
+    if(n==0){cout<<"Warning : Stack underflow!\n";}
+    n--;
+}
+
+int Stack:: top()
+{
+    if(n==0){cout<<"Warning : Stack is empty!\n"; return -1;}
+    return pointer[n-1];
+}
+
+void Stack:: display()
+{
+    if(n==0)
+    {
+        cout<<"Stack is empty!\n";
+        return;
+    }
+
+    for(int i=n-1; i>=0; i--)
+    {
+        cout<<pointer[i]<<" ";
+    }
+    cout<<"\n";
+}
+
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);cout.tie(0);
+    int test=1;
+    //freopen("dull.in", "r", stdin);       // file open for input
+    //freopen("output.txt", "w", stdout);   // file open for output
+    //cin>>test;                              // comment this when number of testcases = 1
+
+    while(test--)
+    {
+
+        Stack st;
+
+        loop(i,1,6){
+        st.push(i);}
+
+        st.display();
+
+        loop(i,0,6){cout<<st.top()<<"\n"; st.pop();}
+
+    }
+
+   return 0;
+
+}

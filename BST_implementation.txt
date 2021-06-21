@@ -1,0 +1,157 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+
+
+class node{
+
+public:
+
+    int data;
+
+    node *left, *right;
+
+};
+
+class BST{
+
+public:
+
+    node *head;
+
+    BST()
+    {
+        head=NULL;
+    }
+
+    ~BST(){}
+
+    void Insert(int val);
+
+    void inorder(node *ptr);
+
+    void preorder(node *ptr);
+
+    void postorder(node *ptr);
+
+};
+
+void BST:: Insert(int val)
+{
+    if(head==NULL)
+    {
+        node *newnode = new node();
+        newnode->data = val;
+        newnode->left=NULL;
+        newnode->right=NULL;
+        head=newnode;
+        return;
+    }
+
+    node *cur = head;
+
+    while(1)
+    {
+        if(val > cur->data)
+        {
+            if(cur->right == NULL)
+            {
+                break;
+            }
+            else cur=cur->right;
+        }
+        else
+        {
+            if(cur->left == NULL)
+            {
+                break;
+            }
+            else cur=cur->left;
+        }
+    }
+
+    node *newnode = new node();
+
+    newnode->data = val;
+    newnode->left=NULL;
+    newnode->right=NULL;
+
+    if(val > cur->data)
+    {
+        cur->right = newnode;
+    }
+
+    else
+    {
+        cur->left = newnode;
+    }
+}
+
+void BST:: inorder(node *ptr)
+{
+    if(ptr==NULL) return;
+
+    inorder(ptr->left);
+
+    cout<<ptr->data<<"\n";
+
+    inorder(ptr->right);
+}
+
+void BST:: preorder(node *ptr)
+{
+    if(ptr==NULL) return;
+
+    cout<<ptr->data<<"\n";
+
+    preorder(ptr->left);
+
+    preorder(ptr->right);
+}
+
+void BST:: postorder(node *ptr)
+{
+    if(ptr==NULL) return;
+
+    postorder(ptr->left);
+
+    postorder(ptr->right);
+
+    cout<<ptr->data<<"\n";
+}
+
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);cout.tie(0);
+    int test=1;
+    //freopen("dull.in", "r", stdin);       // file open for input
+    //freopen("output.txt", "w", stdout);   // file open for output
+    //cin>>test;                              // comment this when number of testcases = 1
+
+    while(test--)
+    {
+
+        BST t;
+
+        t.Insert(4);
+        t.Insert(3);
+        t.Insert(1);
+        t.Insert(10);
+        t.Insert(13);
+        t.Insert(6);
+        t.Insert(7);
+        t.Insert(8);
+        t.Insert(14);
+
+        t.preorder(t.head);
+        nl;
+        t.inorder(t.head);
+        nl;
+        t.postorder(t.head);
+
+    }
+
+   return 0;
+
+}

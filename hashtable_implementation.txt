@@ -1,0 +1,169 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+
+
+class hashtable{
+
+public:
+
+    static const int hashgroups=10;
+
+    list< pair<int,string> > lists[hashgroups];
+
+    hashtable(){}
+
+    ~hashtable(){}
+
+    int hashfunction(int key);
+
+    bool isempty();
+
+    void insert_item(int key, string s);
+
+    void remove_item(int key);
+
+    string search_item(int key);
+
+    void print_table();
+
+};
+
+int hashtable:: hashfunction(int key)
+{
+    return (key%hashgroups);
+}
+
+bool hashtable:: isempty()
+{
+    int sum=0;
+    for(int i=0; i<hashgroups; i++)
+    {
+        sum+=lists[i].size();
+    }
+    if(sum>0) return false;
+    else return true;
+}
+
+string hashtable:: search_item(int key)
+{
+    list< pair<int,string> > :: iterator it;
+
+    int hashval = hashfunction(key);
+
+    it=lists[hashval].begin();
+
+    string value=".";
+
+    while(it!=lists[hashval].end())
+    {
+        if( (it->first) == key )
+        {
+            value=it->second;
+            break;
+        }
+        it++;
+    }
+
+    return value;
+}
+
+void hashtable:: insert_item(int key, string s)
+{
+    int hashval = hashfunction(key);
+
+    list< pair<int,string> > :: iterator it;
+
+    it=lists[hashval].begin();
+
+    while(it!=lists[hashval].end())
+    {
+        if(it->first == key)
+        {
+            it->second=s;
+            cout<<"Warning : key already exists, value replaced!\n";
+            break;
+        }
+        it++;
+    }
+
+    if(it==lists[hashval].end())
+    {
+        cout<<"Pair inserted successfully!\n";
+        lists[hashval].push_back({key,s});
+    }
+}
+
+void hashtable:: remove_item(int key)
+{
+    int hashval = hashfunction(key);
+
+    list< pair<int,string> > :: iterator it;
+
+    it=lists[hashval].begin();
+
+    while(it!=lists[hashval].end())
+    {
+        if(it->first == key)
+        {
+            lists[hashval].erase(it);
+            cout<<"Key erased successfully!\n";
+            break;
+        }
+        it++;
+    }
+
+    if(it==lists[hashval].end())
+    {
+        cout<<"Warning : key does not exist!\n";
+    }
+}
+
+void hashtable:: print_table()
+{
+    list< pair<int,string> > :: iterator it;
+    for(int i=0; i<hashgroups; i++)
+    {
+        if(lists[i].empty()) continue;
+
+        it=lists[i].begin();
+
+        while(it!=lists[i].end())
+        {
+            cout<<(it->first)<<" "<<(it->second)<<"\n";
+            it++;
+        }
+    }
+}
+
+int main()
+{
+
+   hashtable ht;
+
+   cout<<ht.isempty();
+
+   ht.insert_item(20,"Dolesh");
+   ht.insert_item(23,"HB");
+   ht.insert_item(24,"HS");
+   ht.insert_item(25,"Himanshu");
+   ht.insert_item(25,"Himanshu");
+   ht.insert_item(15,"Charu");
+
+   ht.print_table();
+   cout<<endl;
+   cout<<ht.isempty()<<endl;
+
+   ht.remove_item(21);
+
+   ht.remove_item(21);
+
+   ht.remove_item(23);
+
+   cout<<ht.search_item(24);
+   cout<<ht.search_item(23);
+   cout<<ht.search_item(25);
+
+   return 0;
+
+}
