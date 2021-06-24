@@ -149,6 +149,7 @@ int main()
    ht.insert_item(25,"Himanshu");
    ht.insert_item(25,"Himanshu");
    ht.insert_item(15,"Charu");
+   ht.insert_item(28,"Jenish");
 
    ht.print_table();
    cout<<endl;
